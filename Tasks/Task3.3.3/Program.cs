@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace Task3._3._3
 {
@@ -12,29 +7,30 @@ namespace Task3._3._3
     {
         static void Main(string[] args)
         {
-
-            Client client = new Client("Иван");
-
-            client.MakeAnOrder();
+            Client client = new Client("Ivan");
+            Client client1 = new Client("Vova");
+            client1.MakeAnOrder(new Carbonara(25));
+            client.MakeAnOrder(new Pepperoni(25));
             Console.ReadKey();
         }
     }
 
     public static class Pizzeria
     {
-        public delegate void MakePizzaDelegate();
+        public delegate void MakePizzaDelegate(string name);
         public static event MakePizzaDelegate MakePizzaHandler;
-        public static void StatusOrder(Client client)
+
+        public static void StatusOrder(string name, Pizza pizza)
         {
-            Console.WriteLine("Готовим пиццу");
+            Console.WriteLine("Make a pizza " + pizza.Name);
             Thread.Sleep(1000);
-            MakePizza(client);
+            MakePizza(name, pizza);
         }
 
-        private static void MakePizza(Client client)
+        private static void MakePizza(string name, Pizza pizza)
         {
-            Console.WriteLine(client.Name + ", пицца готова");
-            MakePizzaHandler?.Invoke();
+            Console.WriteLine(name + ", your pizza " + pizza.Name + " ready");
+            MakePizzaHandler?.Invoke(name);
         }
     }
 
@@ -55,19 +51,73 @@ namespace Task3._3._3
             }
         }
 
-        public delegate void MakeAnOrderDelegate(Client client);
-        public event MakeAnOrderDelegate MakeAnOrderHandler;
-
-        public void MakeAnOrder()
+        public void MakeAnOrder(Pizza pizza)
         {
-            Console.WriteLine("Делаю заказ");
-            MakeAnOrderHandler += Pizzeria.StatusOrder;
-            MakeAnOrderHandler?.Invoke(this);
+            Console.WriteLine("Making an order");
+            Pizzeria.StatusOrder(this.name, pizza);
         }
 
-        public void PickUpPizza()
+        public void PickUpPizza(string name)
         {
-            Console.WriteLine("Забрал, спасибо");
+            if(name == this.name)
+                Console.WriteLine("Took, thanks");
+        }
+    }
+
+    public abstract class Pizza
+    {
+        private int size;
+        public int Size
+        {
+            get
+            {
+                return size;
+            }
+            set
+            {
+                if(size > 0)
+                    size = value;
+            }
+        }
+
+        private string name;
+        public string Name
+        {
+            get
+            {
+                return name;
+            }
+            set
+            {
+                name = value;
+            }
+        }
+    }
+
+    public class Pepperoni : Pizza
+    {
+        public Pepperoni(int size)
+        {
+            this.Size = size;
+            this.Name = "Pepperoni";
+        }
+    }
+
+    public class Carbonara : Pizza
+    {
+        public Carbonara(int size)
+        {
+            this.Size = size;
+            this.Name = "Carbonara";
+        }
+    }
+
+    public class CheesePizza : Pizza
+    {
+        public CheesePizza(int size)
+        {
+            this.Size = size;
+            this.Name = "CheesePizza";
         }
     }
 }

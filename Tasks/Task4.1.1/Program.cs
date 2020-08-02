@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Windows.Forms;
 
 namespace Task4._1._1
 {
@@ -12,6 +13,30 @@ namespace Task4._1._1
         [STAThread]
         static void Main(string[] args)
         {
+            bool showDialog = true;//Флаг нужно ли отображать диалог выбора директории
+            loggingDirectory = new DirectoryInfo(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\Logging");
+            switch (args.Length)
+            {
+                case 1:
+                    if (Directory.Exists(args[0]))//Если существует указанная директория для отслеживания
+                    {
+                        watchDirectory = new DirectoryInfo(args[0]);
+                        showDialog = false;
+                    }
+                    else
+                        Console.WriteLine("Такой директории не существует, выберите директорию в диалоговом окне");
+                    break;
+                case 2:
+                    if(Directory.Exists(args[0]) && Directory.Exists(args[1]))
+                    {
+                        watchDirectory = new DirectoryInfo(args[0]);
+                        loggingDirectory = new DirectoryInfo(args[1]);
+                        showDialog = false;
+                    }
+                    else
+                        Console.WriteLine("Такой директории для отслеживания или для логгирования не существует.\nВыберите директории в диалоговом окне");
+                    break;
+            }
             //При каждом изменении любого файла создаются 2 папки(если их нет):
             //1. Папка с текущей датой
             //2. Папка с текущим временем
@@ -22,13 +47,29 @@ namespace Task4._1._1
             //с полным путем C:\Logging\02.08.2020\00.00.00\
 
             today = "\\" + DateTime.Now.Day.ToString() + "." + DateTime.Now.Month.ToString() + "." + DateTime.Now.Year.ToString();
-            loggingDirectory = new DirectoryInfo(@"C:\Users\Ivan\Desktop\Logging");
-            watchDirectory = new DirectoryInfo(@"C:\Users\Ivan\Desktop\Example");
+            if(showDialog)
+            {
+                //Показываем диалог(и) выбора директории для отслеживания и/или для логгирования
+                FolderBrowserDialog selectWatchDirectoryDialog = new FolderBrowserDialog();
+                selectWatchDirectoryDialog.Description = "Выберите папку для отслеживания";
+                while (string.IsNullOrWhiteSpace(selectWatchDirectoryDialog.SelectedPath))
+                    selectWatchDirectoryDialog.ShowDialog();
+                watchDirectory = new DirectoryInfo(selectWatchDirectoryDialog.SelectedPath);
+                if (args.Length == 2)
+                {
+                    FolderBrowserDialog selectLoggingDirectoryDialog = new FolderBrowserDialog();
+                    selectLoggingDirectoryDialog.Description = "Выберите папку для логгирования";
+                    while (string.IsNullOrWhiteSpace(selectLoggingDirectoryDialog.SelectedPath))
+                        selectLoggingDirectoryDialog.ShowDialog();
+                    loggingDirectory = new DirectoryInfo(selectLoggingDirectoryDialog.SelectedPath);
+                }
+            }
 
             Console.WriteLine("Выберите режим: \n1. Наблюдение\n2. Откат изменений");
             int changes = 0;
             while (!int.TryParse(Console.ReadLine(), out changes) || changes != 1 && changes != 2);
 
+            //Если выбран режим наблюдения
             if (changes == 1)
             {
                 FileSystemWatcher watcher = new FileSystemWatcher(watchDirectory.FullName);
@@ -52,7 +93,7 @@ namespace Task4._1._1
 
                 Console.WriteLine("Для выхода из приложения нажмите q");
                 while (Console.Read() != 'q') ;
-            }
+            }//Если выбран режим отката
             else
             {
                 Console.WriteLine("Выберите дату для отката: ");
@@ -97,6 +138,8 @@ namespace Task4._1._1
 
             for (int i = 0; i < recoveringFiles.Length; i++)//Копируем их в папку для отслеживания
                 recoveringFiles[i].CopyTo(watchDirectory.FullName + "\\" + recoveringFiles[i].Name, true);
+
+            Console.WriteLine("Все файлы успешно восстановлены");
         }
     }
 }

@@ -1,0 +1,22 @@
+#menu {
+    display: block;
+    width: 200px;
+    background-color: #f9e497;
+    padding: 0px;
+    border: 1px solid black;
+    border-radius: 10px;
+    box-shadow: 5px 5px 0px brown;
+}
+
+
+li {
+    display: block;
+    color: brown;
+    padding-top: 7px;
+    padding-left: 10px;
+    width: 170px;
+}
+
+li:last-child {
+    padding-bottom: 7px;
+}

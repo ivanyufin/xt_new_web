@@ -18,5 +18,7 @@ namespace Table_Users_Awards.DAL.Interfaces
         void DeleteByAwardID(int awardID);
 
         void DeleteByUserID(int userID);
+
+        void Delete(int awardID, int userID);
     }
 }

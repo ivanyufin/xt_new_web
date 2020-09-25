@@ -36,11 +36,14 @@ namespace Task7._1._1.Common
 
         static DependencyResolver()
         {
-            _usersDAO = new JsonUsersDAO();
+            //_usersDAO = new JsonUsersDAO();
+            _usersDAO = new dbUsersDAO();
             _usersLogic = new UsersLogic(_usersDAO);
-            _awardsDAO = new JsonAwardsDAO();
+            //_awardsDAO = new JsonAwardsDAO();
+            _awardsDAO = new dbAwardsDAO();
             _awardsLogic = new AwardsLogic(_awardsDAO);
-            _table_Users_AwardsDAO = new JsonTable_Users_AwardsDAO();
+            //_table_Users_AwardsDAO = new JsonTable_Users_AwardsDAO();
+            _table_Users_AwardsDAO = new dbTable_Users_AwardsDAO();
             _table_Users_AwardsLogic = new Table_Users_AwardsLogic(_table_Users_AwardsDAO);
         }
     }

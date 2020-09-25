@@ -14,5 +14,11 @@ namespace Awards.DAL.Interfaces
         void DeleteByID(int ID);
 
         IEnumerable<Award> GetAll();
+
+        Award GetAwardByID(int ID);
+
+        void Update(Award user, string newTitle);
+
+        int GetID(string title);
     }
 }

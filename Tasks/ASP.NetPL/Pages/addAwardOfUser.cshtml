@@ -1,0 +1,92 @@
+﻿@if (!User.Identity.IsAuthenticated)
+{
+    Response.Redirect("/Pages/login.cshtml");
+}
+
+@using System.Threading;
+@using Task7._1._1.Common;
+
+@{
+    Layout = null;
+    int award_ID = -1;
+    int user_ID = -1;
+    if (IsPost)
+    {
+        if (!int.TryParse(Request["user_ID"], out user_ID))
+        {
+            <h1>Не удалось получить ID пользователя, перенаправление на главную страницу произойдет через 3 секунды</h1>
+            <a href="~/index.cshtml">Перейти</a>
+            Thread.Sleep(3000);
+            Response.Redirect("~/index");
+        }
+        else
+        {
+            if (!int.TryParse(Request["award_ID"], out award_ID))
+            {
+                <!DOCTYPE html>
+
+                <html>
+                <head>
+                    <meta name="viewport" content="width=device-width" />
+                    <link href="~/Style/Style.css" rel="stylesheet" />
+                    <title></title>
+                </head>
+                <body>
+                    <div>
+
+                        <h1>Список наград на данный момент: </h1>
+
+                        <div id="users">
+                            @{
+                                var awardsLogic = DependencyResolver.AwardsLogic;
+
+                                var awards = awardsLogic.GetAll();
+
+                                if (awards.Count() > 0)
+                                {
+                                    foreach (var award in awards)
+                                    {
+                                        <div class="award" onclick="addAwardOfUser(this)">
+                                            <div class="information_container">
+                                                <img src="~/Images/award.png" alt="ImagesOfAward" class="award_image" />
+                                                <div class="award_name">@award.Title</div>
+                                                <div class="award_ID">@award.ID</div>
+                                            </div>
+                                        </div>
+                                    }
+                                }
+                                else
+                                {
+                                    <p>На данный момент наград нет. Необходимо добавить хотя бы 1</p>
+                                    <form action="~/Pages/addAward.cshtml" method="post">
+                                        <input type="text" name="user_ID" value="@user_ID" style="display: none;" />
+                                        <input type="submit" value="Добавить" />
+                                    </form>
+                                }
+                            }
+                        </div>
+                    </div>
+                    <script>
+                        function addAwardOfUser(element) {
+                            var form_addAwardOfUser = document.getElementById("form_addAwardOfUser");
+                            var award_ID = document.getElementById("award_ID");
+                            award_ID.value = element.childNodes[1].childNodes[5].innerText;
+                            form_addAwardOfUser.submit();
+                        }
+                    </script>
+                    <form action="#" method="post" style="display:none;" id="form_addAwardOfUser">
+                        <input type="text" name="user_ID" value="@user_ID" />
+                        <input type="text" name="award_ID" value="" id="award_ID" />
+                    </form>
+                </body>
+            </html>
+        }
+        else
+        {
+            var tableLogic = DependencyResolver.Table_Users_AwardsLogic;
+            tableLogic.Add(user_ID, award_ID);
+            Response.Redirect("~/index");
+        }
+    }
+}
+}

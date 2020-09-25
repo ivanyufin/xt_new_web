@@ -8,13 +8,21 @@ namespace Task7._1._1.Entities
 {
     public class User
     {
-        public int Age { get; set; }
+        public int Age
+        {
+            get
+            {
+                return DateTime.Now.Year - DateOfBirth.Year;
+            }
+        }
 
         public DateTime DateOfBirth { get; set; }
 
         public int ID { get; set; }
 
         public string Name { get; set; }
+
+        public User() { }
 
         public User(int id)
         {

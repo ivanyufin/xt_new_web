@@ -35,11 +35,42 @@ namespace Users.DAL
 
         public IEnumerable<User> GetAll()
         {
-            var directory = new DirectoryInfo(Environment.CurrentDirectory + "\\" + LocalUsersPath);
+            var directory = new DirectoryInfo(LocalUsersPath);
 
             foreach (var file in directory.GetFiles())
                 using (var reader = new StreamReader(file.FullName))
                     yield return JsonConvert.DeserializeObject<User>(reader.ReadToEnd());
+        }
+
+        public int GetID(string name)
+        {
+            throw new NotImplementedException();
+        }
+
+        public User GetUserByID(int ID)
+        {
+            foreach(var user in GetAll())
+                if (user.ID == ID)
+                    return user;
+            return null;
+        }
+
+        public void Update(User user, string newName, DateTime newDateOfBirth)
+        {
+            if (user == null)
+                throw new ArgumentNullException(nameof(user));
+
+            string userName = "User_" + user.ID + ".json";
+            if (!File.Exists(LocalUsersPath + userName))
+                throw new FileNotFoundException();
+
+            user.Name = newName;
+            user.DateOfBirth = newDateOfBirth;
+
+            var userJson = JsonConvert.SerializeObject(user);
+
+            using (var writer = new StreamWriter(LocalUsersPath + userName))
+                writer.Write(userJson);
         }
     }
 }

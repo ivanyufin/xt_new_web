@@ -1,0 +1,55 @@
+﻿@if (!User.Identity.IsAuthenticated)
+{
+    Response.Redirect("/Pages/login.cshtml");
+}
+
+@using Task7._1._1.Common;
+@using Task7._1._1.Entities;
+
+@{
+    Layout = null;
+    if (IsPost)
+    {
+        string errorMessage = "";
+        var userName = Request["user_name"] as string;
+        DateTime userDateOfBirth = new DateTime();
+        if (!DateTime.TryParse(Request["user_dateOfBirth"], out userDateOfBirth))
+        {
+            errorMessage += "Вы ввели неправильно: " + Environment.NewLine + "Дата" + Environment.NewLine;
+        }
+        if (errorMessage == "")
+        {
+            var usersLogic = DependencyResolver.UsersLogic;
+            usersLogic.Add(new User() { DateOfBirth = userDateOfBirth, Name = userName });
+            Response.Redirect("~/index");
+        }
+        else
+        {
+            <pre class="error_message">@errorMessage</pre>
+        }
+    }
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link href="~/Style/Style.css" rel="stylesheet" />
+    <title></title>
+</head>
+<body>
+    <div>
+        <form action="#" method="post">
+            <div class="user">
+                <div class="information_container">
+                    <img src="~/Images/user.png" alt="ImagesOfUser" class="user_image" />
+                    <div class="user_name"><input type="text" name="user_name" value="" placeholder="Имя..." /></div>
+                    <div class="user_dateOfBirth"><input type="datetime-local" name="user_dateOfBirth" /></div>
+                </div>
+                <input type="submit" value="Создать" />
+            </div>
+        </form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,90 @@
+﻿@if (!User.Identity.IsAuthenticated)
+{
+    Response.Redirect("/Pages/login.cshtml");
+}
+
+@using System.Threading;
+@using Task7._1._1.Common;
+
+@{
+    Layout = null;
+    int award_ID = -1;
+    int user_ID = -1;
+    if (IsPost)
+    {
+        if (!int.TryParse(Request["award_ID"], out award_ID))
+        {
+            <h1>Не удалось получить ID награды, перенаправление на главную страницу произойдет через 3 секунды</h1>
+            <a href="~/index.cshtml">Перейти</a>
+            Thread.Sleep(3000);
+            Response.Redirect("~/index");
+        }
+        else
+        {
+            if (!int.TryParse(Request["user_ID"], out user_ID))
+            {
+                <!DOCTYPE html>
+
+                <html>
+                <head>
+                    <meta name="viewport" content="width=device-width" />
+                    <link href="~/Style/Style.css" rel="stylesheet" />
+                    <title></title>
+                </head>
+                <body>
+                    <div>
+
+                        <h1>Список пользователей на данный момент: </h1>
+
+                        <div id="users">
+                            @{
+                                var usersLogic = DependencyResolver.UsersLogic;
+
+                                var users = usersLogic.GetAll();
+
+                                if (users.Count() > 0)
+                                {
+                                    foreach (var user in users)
+                                    {
+                                        <div class="user" onclick="addUserOfAward(this)">
+                                            <div class="information_container">
+                                                <img src="~/Images/user.png" alt="ImagesOfUser" class="user_image" />
+                                                <div class="user_name">@user.Name</div>
+                                                <div class="user_dateOfBirth">@user.DateOfBirth.Day.@user.DateOfBirth.Month.@user.DateOfBirth.Year</div>
+                                                <div class="user_Age">@user.Age</div>
+                                                <div class="user_ID">@user.ID</div>
+                                            </div>
+                                        </div>
+                                    }
+                                }
+                                else
+                                {
+                                    <p>На данный момент пользователей нет. Необходимо создать хотя бы 1</p>
+                                }
+                            }
+                        </div>
+                    </div>
+                    <script>
+                        function addUserOfAward(element) {
+                            var form_addUserOfAward = document.getElementById("form_addUserOfAward");
+                            var user_ID = document.getElementById("user_ID");
+                            user_ID.value = element.childNodes[1].childNodes[9].innerText;
+                            form_addUserOfAward.submit();
+                        }
+                    </script>
+                    <form action="#" method="post" style="display:none;" id="form_addUserOfAward">
+                        <input type="text" name="award_ID" value="@award_ID" />
+                        <input type="text" name="user_ID" value="" id="user_ID" />
+                    </form>
+                </body>
+            </html>
+        }
+        else
+        {
+            var tableLogic = DependencyResolver.Table_Users_AwardsLogic;
+            tableLogic.Add(user_ID, award_ID);
+            Response.Redirect("~/index");
+        }
+    }
+}
+}

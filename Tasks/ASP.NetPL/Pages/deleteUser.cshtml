@@ -1,0 +1,48 @@
+﻿@if (!User.Identity.IsAuthenticated)
+{
+    Response.Redirect("/Pages/login.cshtml");
+}
+
+@using System.Threading;
+@using Task7._1._1.Common;
+@using Task7._1._1.Entities;
+
+@{
+    Layout = null;
+
+    int user_ID = -1;
+    if (IsPost)
+    {
+        if (!int.TryParse(Request["user_id"], out user_ID))
+        {
+            <h1>Не удалось получить ID пользователя, перенаправление на главную страницу произойдет через 3 секунды</h1>
+            <a href="~/index.cshtml">Перейти</a>
+            Thread.Sleep(3000);
+            Response.Redirect("~/index");
+        }
+        var userLogic = DependencyResolver.UsersLogic;
+        var tableLogic = DependencyResolver.Table_Users_AwardsLogic;
+        int delete_user_of_award = -1;
+
+        if (!int.TryParse(Request["delete_user_of_award"], out delete_user_of_award))
+        {
+            userLogic.DeleteByID(user_ID);
+        }
+        else
+        {
+            int award_ID = -1;
+            if (int.TryParse(Request["award_ID"], out award_ID))
+            {
+                tableLogic.Delete(award_ID, user_ID);
+            }
+            else
+            {
+                <h1>Не удалось получить ID пользователя, перенаправление на главную страницу произойдет через 3 секунды</h1>
+                <a href="~/index.cshtml">Перейти</a>
+                Thread.Sleep(3000);
+                Response.Redirect("~/index");
+            }
+        }
+    }
+    Response.Redirect("~/index");
+}

@@ -1,0 +1,52 @@
+﻿@if (!User.Identity.IsAuthenticated)
+{
+    Response.Redirect("/Pages/login.cshtml");
+}
+
+@using Task7._1._1.Common;
+@using Task7._1._1.Entities;
+
+@{
+    Layout = null;
+    var user_ID = -1;
+    if (IsPost)
+    {
+        var awardName = "";
+        if (int.TryParse(Request["user_ID"], out user_ID))
+        {
+            if (Request["award_name"] != null && !(string.IsNullOrWhiteSpace(Request["award_name"].ToString())))
+            {
+                awardName = Request["award_name"].ToString();
+                var awardsLogic = DependencyResolver.AwardsLogic;
+                awardsLogic.Add(new Award() { Title = awardName });
+                var tableLogic = DependencyResolver.Table_Users_AwardsLogic;
+                tableLogic.Add(user_ID, awardsLogic.GetID(awardName));
+                Response.Redirect("~/index");
+            }
+        }
+    }
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link href="~/Style/Style.css" rel="stylesheet" />
+    <title></title>
+</head>
+<body>
+    <div>
+        <form action="#" method="post">
+            <div class="award">
+                <div class="information_container">
+                    <img src="~/Images/award.png" alt="ImagesOfAward" class="award_image" />
+                    <div class="award_name"><input type="text" name="award_name" value="" placeholder="Название..." /></div>
+                </div>
+                <input type="text" name="user_ID" value="@user_ID" style="display:none;" />
+                <input type="submit" value="Создать" />
+            </div>
+        </form>
+    </div>
+</body>
+</html>

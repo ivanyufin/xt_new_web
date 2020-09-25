@@ -16,5 +16,7 @@ namespace Task7._1._1.Entities
         {
             this.ID = id;
         }
+
+        public Award() { }
     }
 }

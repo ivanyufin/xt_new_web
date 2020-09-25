@@ -1,0 +1,70 @@
+﻿@if (!User.Identity.IsAuthenticated)
+{
+    Response.Redirect("/Pages/login.cshtml");
+}
+
+@using Task7._1._1.Common;
+@using Task7._1._1.Entities;
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link href="/Style/Style.css" rel="stylesheet" />
+    <title></title>
+</head>
+<body>
+    <div>
+        <h1>Список наград на данный момент: </h1>
+
+        <div id="awards">
+            @{
+                var awardsLogic = DependencyResolver.AwardsLogic;
+
+                var awards = awardsLogic.GetAll();
+
+                if (awards.Count() > 0)
+                {
+                    foreach (var award in awards)
+                    {
+                        <div class="award" onclick="changeAward(this)">
+                            <div class="information_container">
+                                <img src="~/Images/award.png" alt="ImagesOfAward" class="award_image" />
+                                <div class="award_name">@award.Title</div>
+                                <div class="award_ID">@award.ID</div>
+                            </div>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <p>На данный момент наград нет. Необходимо создать хотя бы 1</p>
+                }
+            }
+            @if (User.IsInRole("admin"))
+            {
+                <a href="~/Pages/addAward.cshtml">
+                    <img src="~/Images/addBlack.png" alt="AddAwardImage" id="award_add_image" />
+                </a>
+            }
+        </div>
+
+    </div>
+    <script>
+        function changeAward(element) {
+            var form_changeAward = document.getElementById("form_changeAward");
+            var changed_award_id = document.getElementById("changed_award_id");
+            changed_award_id.value = element.childNodes[1].childNodes[5].innerText;
+            form_changeAward.submit();
+        }
+    </script>
+    <form action="~/Pages/changeAward.cshtml" method="post" id="form_changeAward">
+        <input type="text" name="award_id" value="" id="changed_award_id" />
+    </form>
+</body>
+</html>

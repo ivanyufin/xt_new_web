@@ -126,6 +126,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Table_Users_Awards.BLL", "T
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Table_Users_Awards.BLL.Interfaces", "Table_Users_Awards.BLL.Interfaces\Table_Users_Awards.BLL.Interfaces.csproj", "{F5A88908-5094-46F9-B6CC-3AE89ACBEAF0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ASP.NetPL", "ASP.NetPL\ASP.NetPL.csproj", "{BF6DEB08-9F79-42AB-A878-1BCAD464C61D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -288,6 +290,10 @@ Global
 		{F5A88908-5094-46F9-B6CC-3AE89ACBEAF0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F5A88908-5094-46F9-B6CC-3AE89ACBEAF0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F5A88908-5094-46F9-B6CC-3AE89ACBEAF0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BF6DEB08-9F79-42AB-A878-1BCAD464C61D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BF6DEB08-9F79-42AB-A878-1BCAD464C61D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BF6DEB08-9F79-42AB-A878-1BCAD464C61D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BF6DEB08-9F79-42AB-A878-1BCAD464C61D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -341,6 +347,7 @@ Global
 		{41AFD2F4-E095-41C7-A23C-A5D89D44BBCF} = {C47F44A6-B845-43A3-9CD1-A9D240FDD8F1}
 		{35BFC016-F6D6-4BF0-A521-E511DBC7F656} = {FA655799-6A44-4558-A8EE-53C366AD6645}
 		{F5A88908-5094-46F9-B6CC-3AE89ACBEAF0} = {FA655799-6A44-4558-A8EE-53C366AD6645}
+		{BF6DEB08-9F79-42AB-A878-1BCAD464C61D} = {4AF967AF-A8E8-4F03-814A-E9C98E2CFFDE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7977E223-0C37-4C7D-8787-0CBFD8A44065}

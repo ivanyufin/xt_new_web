@@ -1,0 +1,75 @@
+﻿@if (!User.Identity.IsAuthenticated)
+{
+    Response.Redirect("/Pages/login.cshtml");
+}
+
+@using Task7._1._1.Common;
+@using Task7._1._1.Entities;
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link href="~/Style/Style.css" rel="stylesheet" />
+    <title></title>
+</head>
+<body>
+    <div>
+        <h1>Список пользователей на данный момент: </h1>
+
+        <div id="users">
+            @{
+                var usersLogic = DependencyResolver.UsersLogic;
+
+                var users = usersLogic.GetAll();
+
+                if (users.Count() > 0)
+                {
+                    foreach (var user in users)
+                    {
+                            <div class="user" onclick="changeUser(this)">
+                                <div class="information_container">
+                                    <img src="~/Images/user.png" alt="ImagesOfUser" class="user_image" />
+                                    <div class="user_name">@user.Name</div>
+                                    <div class="user_dateOfBirth">@user.DateOfBirth.Day.@user.DateOfBirth.Month.@user.DateOfBirth.Year</div>
+                                    <div class="user_Age">@user.Age</div>
+                                    <div class="user_ID">@user.ID</div>
+                                </div>
+                            </div>
+                    }
+                }
+                else
+                {
+                        <p>На данный момент пользователей нет. Необходимо создать хотя бы 1</p>
+                    }
+                }
+            @if (User.IsInRole("admin"))
+            {
+                <a href="~/Pages/addUser.cshtml">
+                    <img src="~/Images/addBlack.png" alt="AddUserImage" id="user_add_image" />
+                </a>
+            }
+        </div>
+
+    </div>
+    <script>
+        var addUserImage = document.getElementById("user_add_image");
+        if (document.getElementById("users").childNodes.length == 5)
+            addUserImage.style = "top: 50px;";
+        function changeUser(element) {
+            var form_changeUser = document.getElementById("form_changeUser");
+            var changed_user_id = document.getElementById("changed_user_id");
+            changed_user_id.value = element.childNodes[1].childNodes[9].innerText;
+            form_changeUser.submit();
+        }
+    </script>
+    <form action="~/Pages/changeUser.cshtml" method="post" id="form_changeUser">
+        <input type="text" name="user_id" value="" id="changed_user_id" />
+    </form>
+</body>
+</html>

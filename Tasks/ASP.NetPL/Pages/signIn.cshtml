@@ -1,0 +1,31 @@
+﻿@{
+    Layout = null;
+
+    var login = Request["login"];
+    var password = Request["password"];
+    if(login == "admin" && password == "admin" || login == "user" && password == "user")
+    {
+        FormsAuthentication.SetAuthCookie(login, true);
+        Response.Redirect("/index.cshtml");
+    }
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+</head>
+<body>
+    <div>
+        <form action="#" method="post">
+            <input type="text" name="login" value="" placeholder="Логин..." />
+            <input type="password" name="password" value="" placeholder="Пароль..." />
+            <input type="submit" value="Войти" />
+        </form>
+        <p>login: admin, password: admin</p><br />
+        <p>login: user, password: user</p>
+    </div>
+</body>
+</html>

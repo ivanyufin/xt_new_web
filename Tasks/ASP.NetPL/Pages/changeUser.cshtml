@@ -1,0 +1,176 @@
+﻿@if (!User.Identity.IsAuthenticated)
+{
+    Response.Redirect("/Pages/login.cshtml");
+}
+@using System.Threading;
+@using Task7._1._1.Common;
+@{
+    var userLogic = DependencyResolver.UsersLogic;
+    Layout = null;
+    int user_ID = -1;
+    if (IsPost)
+    {
+        string errorMessage = "";
+        if (!int.TryParse(Request["user_id"], out user_ID))
+        {
+            <h1>Не удалось получить ID пользователя, перенаправление на главную страницу произойдет через 3 секунды</h1>
+            <a href="~/index.cshtml">Перейти</a>
+            Thread.Sleep(3000);
+            Response.Redirect("~/index");
+        }
+        if (!string.IsNullOrWhiteSpace(Request["user_name"]) && !string.IsNullOrWhiteSpace(Request["user_DateOfBirth"]))
+        {
+            var userName = Request["user_name"];
+            DateTime user_DateOfBirth = new DateTime();
+            if (!DateTime.TryParse(Request["user_dateOfBirth"], out user_DateOfBirth))
+            {
+                errorMessage += "Вы ввели неправильно: " + Environment.NewLine + "Дата" + Environment.NewLine;
+            }
+
+            if (errorMessage == "")
+            {
+                userLogic.Update(userLogic.GetUserByID(user_ID), userName, user_DateOfBirth);
+                Response.Redirect("~/index");
+            }
+            else
+            {
+                <pre class="error_message">@errorMessage</pre>
+            }
+        }
+    }
+    var user = userLogic.GetUserByID(user_ID);
+}
+@if (User.IsInRole("admin"))
+{
+
+    <!DOCTYPE html>
+
+    <html>
+    <head>
+        <meta name="viewport" content="width=device-width" />
+        <link href="~/Style/Style.css" rel="stylesheet" />
+        <title></title>
+    </head>
+    <body>
+        <h1>Изменение данных пользователя @user.Name</h1>
+        <div>
+            <form action="#" method="post" id="form_deleteUser">
+                <div class="user">
+                    <div class="information_container">
+                        <img src="~/Images/user.png" alt="ImagesOfUser" class="user_image" />
+                        <div class="user_name"><input type="text" name="user_name" value="" placeholder="Имя..." /></div>
+                        <div class="user_dateOfBirth"><input type="datetime-local" name="user_dateOfBirth" /></div>
+                        <div class="user_ID"><input type="text" name="user_ID" value="@user.ID" /></div>
+                    </div>
+                    <input type="submit" value="Сохранить" />
+                    <button type="button" id="delete_button">Удалить пользователя</button>
+                </div>
+            </form>
+        </div>
+        <div id="awards_of_user">
+            <h3>Награды, которые есть у пользователя:</h3>
+            @{
+                var tableLogic = DependencyResolver.Table_Users_AwardsLogic;
+
+                var awards = tableLogic.GetAwardsByUserID(user.ID);
+
+                if (awards.Count() > 0)
+                {
+                    foreach (var award in awards)
+                    {
+                        <div class="award" onclick="deleteAwardOfUser(this)">
+                            <div class="information_container">
+                                <img src="~/Images/award.png" alt="ImagesOfAward" class="award_image" />
+                                <div class="award_name">@award.Title</div>
+                                <div class="award_ID">@award.ID</div>
+                            </div>
+                        </div>
+                    }
+                    <form action="~/Pages/addAwardOfUser.cshtml" method="post">
+                        <input type="text" name="user_ID" value="@user_ID" style="display: none;" />
+                        <input type="submit" value="Добавить" />
+                    </form>
+                }
+                else
+                {
+                    <p>На данный момент наград нет. Необходимо добавить хотя бы 1</p>
+                    <form action="~/Pages/addAwardOfUser.cshtml" method="post">
+                        <input type="text" name="user_ID" value="@user_ID" style="display: none;" />
+                        <input type="submit" value="Добавить" />
+                    </form>
+                }
+            }
+        </div>
+        <script>
+            var delete_button = document.getElementById("delete_button");
+            delete_button.addEventListener("click", deleteUser, false);
+
+            function deleteUser() {
+                var result = confirm("Вы точно хотите удалить пользователя?");
+                if (result) {
+                    var form_deleteUser = document.getElementById("form_deleteUser");
+
+                    form_deleteUser.action = "deleteUser.cshtml";
+                    form_deleteUser.submit();
+                }
+            }
+
+            function deleteAwardOfUser(element) {
+                var result = confirm("Вы точно хотите убрать эту награду у пользователя?");
+                if (result) {
+                    var form_deleteAwardOfUser = document.getElementById("form_deleteAwardOfUser");
+                    var delete_award_of_user_id = document.getElementById("delete_award_of_user_id");
+                    delete_award_of_user_id.value = element.childNodes[1].childNodes[5].innerText;
+                    form_deleteAwardOfUser.submit();
+                }
+            }
+
+        </script>
+
+        <form action="~/Pages/deleteAward.cshtml" method="post" id="form_deleteAwardOfUser">
+            <input type="text" name="award_id" value="" id="delete_award_of_user_id" />
+            <input type="text" name="delete_award_of_user" value="1" />
+        </form>
+    </body>
+</html>
+}
+else
+{
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link href="~/Style/Style.css" rel="stylesheet" />
+    <title></title>
+</head>
+<body>
+    <div id="awards_of_user">
+        <h3>Награды, которые есть у пользователя:</h3>
+        @{
+            var tableLogic = DependencyResolver.Table_Users_AwardsLogic;
+
+            var awards = tableLogic.GetAwardsByUserID(user.ID);
+
+            if (awards.Count() > 0)
+            {
+                foreach (var award in awards)
+                {
+                    <div class="award">
+                        <div class="information_container">
+                            <img src="~/Images/award.png" alt="ImagesOfAward" class="award_image" />
+                            <div class="award_name">@award.Title</div>
+                            <div class="award_ID">@award.ID</div>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <p>На данный момент наград нет.</p>
+            }
+        }
+    </div>
+    </body>
+</html>
+    }

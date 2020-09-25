@@ -24,6 +24,11 @@ namespace Table_Users_Awards.BLL
             //TODO
         }
 
+        public void Delete(int awardID, int userID)
+        {
+            _table_Users_AwardsDAO.Delete(awardID, userID);
+        }
+
         public void DeleteByAwardID(int awardID)
         {
             _table_Users_AwardsDAO.DeleteByAwardID(awardID);

@@ -32,5 +32,20 @@ namespace Awards.BLL
         {
             return _awardsDAO.GetAll();
         }
+
+        public Award GetAwardByID(int ID)
+        {
+            return _awardsDAO.GetAwardByID(ID);
+        }
+
+        public int GetID(string title)
+        {
+            return _awardsDAO.GetID(title);
+        }
+
+        public void Update(Award user, string newTitle)
+        {
+            _awardsDAO.Update(user, newTitle);
+        }
     }
 }

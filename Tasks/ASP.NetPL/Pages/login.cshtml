@@ -1,0 +1,11 @@
+﻿@{
+    Layout = null;
+    if(User.Identity.IsAuthenticated)
+    {
+        Response.Redirect("~/index.cshtml");
+    }
+    else
+    {
+        Response.Redirect("~/Pages/signIn.cshtml");
+    }
+}

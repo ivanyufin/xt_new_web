@@ -7,7 +7,7 @@
     <ProductVersion>
     </ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{4DFE5242-81FB-4D9E-BD37-D21145E39ACB}</ProjectGuid>
+    <ProjectGuid>{BF6DEB08-9F79-42AB-A878-1BCAD464C61D}</ProjectGuid>
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -88,14 +88,32 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Images\addBlack.png" />
+    <Content Include="Images\addBlue.png" />
+    <Content Include="Images\user.png" />
+    <Content Include="Style\Style.css" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\MyRoleProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="index.cshtml" />
     <None Include="packages.config" />
+    <Content Include="Pages\Users.cshtml" />
+    <Content Include="Pages\addUser.cshtml" />
+    <Content Include="Pages\changeUser.cshtml" />
+    <Content Include="Pages\deleteUser.cshtml" />
+    <Content Include="Pages\Awards.cshtml" />
+    <Content Include="Pages\addAward.cshtml" />
+    <Content Include="Pages\changeAward.cshtml" />
+    <Content Include="Pages\deleteAward.cshtml" />
+    <Content Include="Pages\addUserOfAward.cshtml" />
+    <Content Include="Pages\addAwardOfUser.cshtml" />
+    <Content Include="Pages\login.cshtml" />
+    <Content Include="Pages\signIn.cshtml" />
+    <Content Include="Pages\signOut.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -125,6 +143,7 @@
       <Name>Users.BLL.Interfaces</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
@@ -138,7 +157,7 @@
         <WebProjectProperties>
           <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>2451</DevelopmentServerPort>
+          <DevelopmentServerPort>3905</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>https://localhost:44321/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>

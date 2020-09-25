@@ -12,9 +12,10 @@ namespace ConsolePL
             var awardsLogic = DependencyResolver.AwardsLogic;
             var tableLogic = DependencyResolver.Table_Users_AwardsLogic;
 
-            var awards = tableLogic.GetAwardsByUserID(0);
-            foreach(var item in awards)
-                Console.WriteLine(item.Title);
+            foreach(var user in tableLogic.GetUsersByAwardID(1))
+            {
+                Console.WriteLine(user.Name);
+            }
             Console.ReadLine();
         }
     }

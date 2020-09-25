@@ -1,0 +1,53 @@
+﻿body {
+    position: relative;
+}
+
+#users, #awards {
+    position: relative;
+}
+
+.user input[type="text"], input[type="datetime-local"], .award input[type="text"], input[type="datetime-local"] {
+    display: block;
+    width: 140px;
+}
+
+.user, .award {
+    width: 150px;
+    border: 1px solid black;
+    display: inline-block;
+}
+
+.user:hover, .award:hover {
+    cursor: pointer;
+}
+
+.information_container {
+    width: 150px;
+    bottom: 0px;
+    text-align: center;
+}
+
+.user_ID, .award_ID {
+    display: none;
+}
+
+.user_image, .award_image {
+    margin-top: 5px;
+    width: 85%;
+}
+
+#user_add_image, #award_add_image {
+    position: absolute;
+    top: calc(50% - 50px);
+    width: 100px;
+    margin-left: 5px;
+}
+
+.error_message {
+    color: red;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+#form_changeUser, #form_changeAward, #form_deleteAwardOfUser, #form_deleteUserOfAward {
+    display: none;
+}

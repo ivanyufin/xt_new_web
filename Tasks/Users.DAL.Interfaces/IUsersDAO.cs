@@ -14,5 +14,11 @@ namespace Users.DAL.Interfaces
         void DeleteByID(int ID);
 
         IEnumerable<User> GetAll();
+
+        User GetUserByID(int ID);
+
+        void Update(User user, string newName, DateTime newDateOfBirth);
+
+        int GetID(string name);
     }
 }
